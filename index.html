@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>翻牌遊戲</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- 主畫面 -->
+    <div id="start">
+      <h1>翻牌遊戲</h1>
+      <div>🍎🍊🍌🍉🍇🍓🫐🍒🍑🍍🥥🥝🥑🧅</div>
+      <button id="start-btn">開始遊戲</button>
+    </div>
+    <!-- 遊戲畫面 -->
+    <div id="game-board" class="hidden">
+      <div id="card">
+        <!-- 卡牌區域 -->
+        <div class="card-inner">
+          <div>🍎</div>
+        </div>
+        <div class="card-inner">
+          <div>🍎</div>
+        </div>
+        <div class="card-inner">
+          <div>🍎</div>
+        </div>
+        <div class="card-inner">
+          <div>🍎</div>
+        </div>
+        <div class="card-inner">
+          <div>🍎</div>
+        </div>
+        <div class="card-inner">
+          <div>🍎</div>
+        </div>
+        <div class="card-inner">
+          <div>🍎</div>
+        </div>
+        <div class="card-inner">
+          <div>🍎</div>
+        </div>
+      </div>
+      <!-- 遊戲控制按鈕 -->
+      <div id="gmae-button">
+        <button>回主畫面</button>
+        <button>暫停</button>
+        <button>重新開始</button>
+      </div>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
