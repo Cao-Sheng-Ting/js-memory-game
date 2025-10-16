@@ -39,7 +39,7 @@ html, body, #app {
   position: relative; /* 遊戲按鈕定位 */
 }
 
-#card{
+#cards{
   display: grid;
   grid-template-columns: repeat(4, 100px);
   grid-template-rows: repeat(2, 100px);
