@@ -10,13 +10,21 @@ startBtn.addEventListener('click', function(){
 const fruitArr = ["🍎","🍊","🍌","🍉","🍇","🍓","🫐","🍒","🍑","🍍","🥥","🥝","🥑","🧅"]
 const level1 = 4
 
-const selectFruits = [...fruitArr].sort(()=> Math.random()- 0.5).slice(0,level1) //隨機挑選水果
-const shuffledCard = selectFruits.flatMap(x => [x,x]).sort(() => Math.random() - 0.5) //挑選的水果乘以2後打散
+function shuffle(array) {
+  const arr = [...array];
+  for(let i = array.length - 1; i > 0; i--){
+    let j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]]
+  }
+  return arr
+}  
+
+const selectFruits = shuffle(fruitArr).slice(0,level1).flatMap(x => [x, x]) //隨機挑選水果，並複製一份方便配對
+const shuffledCard = shuffle(selectFruits) //將selectFruits洗牌
 
 const cards = document.getElementById("cards")
 Array.from({length: shuffledCard.length}, (_, i)=>{
   const cardElements = document.createElement("div")
-  cardElements.classList.add("card-inner")
 
   const card = document.createElement("div")
   const cardFront = "???"
