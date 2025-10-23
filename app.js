@@ -1,14 +1,14 @@
-const startBtn = document.getElementById("start-btn")
-const gameBoard = document.getElementById("game-board")
-const start = document.getElementById("start")
+const startBtn = document.getElementById("start-btn");
+const gameBoard = document.getElementById("game-board");
+const startScreen = document.getElementById("start");
 
 startBtn.addEventListener('click', function(){
-  start.classList.add("hidden");       // 隱藏主畫面
+  startScreen.classList.add("hidden");       // 隱藏主畫面
   gameBoard.classList.remove("hidden"); // 顯示遊戲畫面
 })
 
-const fruitArr = ["🍎","🍊","🍌","🍉","🍇","🍓","🫐","🍒","🍑","🍍","🥥","🥝","🥑","🧅"]
-const level1 = 4
+const fruits = ["🍎","🍊","🍌","🍉","🍇","🍓","🫐","🍒","🍑","🍍","🥥","🥝","🥑","🧅"];
+const Level_1 = 4;
 
 function shuffle(array) {
   const arr = [...array];
@@ -17,22 +17,28 @@ function shuffle(array) {
     [arr[i], arr[j]] = [arr[j], arr[i]]
   }
   return arr
-}  
+}
 
-const selectFruits = shuffle(fruitArr).slice(0,level1).flatMap(x => [x, x]) //隨機挑選水果，並複製一份方便配對
-const shuffledCard = shuffle(selectFruits) //將selectFruits洗牌
+const selectFruits = shuffle(fruits).slice(0,Level_1).flatMap(x => [x, x]); //隨機挑選水果，並複製一份方便配對
+const shuffledCards = shuffle(selectFruits); //將selectFruits洗牌
 
-const cards = document.getElementById("cards")
-Array.from({length: shuffledCard.length}, (_, i)=>{
-  const cardElements = document.createElement("div")
+const cardsWrapper = document.getElementById("cards");
 
-  const card = document.createElement("div")
-  const cardFront = "???"
-  const cardBack = shuffledCard[i]
-  card.textContent = cardFront
-  
-  cards.appendChild(cardElements)
-  cardElements.appendChild(card)
+//將隨機洗好的卡牌陣列生成對應的DOM結構
+const cardsContent = shuffledCards.map( (fruit) => { 
+  const cardContainer = document.createElement("div");
+  const card = document.createElement("div");
 
-  card.addEventListener("click", ()=> card.textContent = cardBack)
-})
+  const cardFront = "???";
+  card.dataset.fruit = fruit;
+
+  card.textContent = cardFront;
+
+  cardContainer.appendChild(card);
+
+  card.addEventListener("click", ()=> card.textContent = card.dataset.fruit);
+
+  return cardContainer
+});
+
+cardsWrapper.append(...cardsContent);
