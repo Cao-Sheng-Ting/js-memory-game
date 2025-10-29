@@ -23,22 +23,58 @@ const selectFruits = shuffle(fruits).slice(0,Level_1).flatMap(x => [x, x]); //�
 const shuffledCards = shuffle(selectFruits); //將selectFruits洗牌
 
 const cardsWrapper = document.getElementById("cards");
+const cardFront = "???";
 
 //將隨機洗好的卡牌陣列生成對應的DOM結構
 const cardsContent = shuffledCards.map( (fruit) => { 
   const cardContainer = document.createElement("div");
   const card = document.createElement("div");
 
-  const cardFront = "???";
   card.dataset.fruit = fruit;
 
   card.textContent = cardFront;
+  card.classList.add("card")
 
   cardContainer.appendChild(card);
 
-  card.addEventListener("click", ()=> card.textContent = card.dataset.fruit);
-
   return cardContainer
 });
-
 cardsWrapper.append(...cardsContent);
+
+let firstCard = null;
+let secondCard = null;
+const cards = document.querySelectorAll(".card")
+
+// 點擊卡片後的判斷邏輯
+cards.forEach((card) => 
+  card.addEventListener("click", ()=> {
+    card.textContent = card.dataset.fruit
+    if(!firstCard)
+      {
+        firstCard = card
+      }else if(!secondCard && card !== firstCard){
+        secondCard = card
+      }
+      console.log(firstCard, secondCard)
+      if(firstCard && secondCard){
+        if(firstCard.dataset.fruit == secondCard.dataset.fruit){
+          firstCard.classList.add("card-hidden")
+          secondCard.classList.add("card-hidden")
+          firstCard = null
+          secondCard = null
+          console.log("消除了")
+        }else{
+          cards.forEach(card => card.style.pointerEvents= "none");
+          setTimeout(()=>{
+            firstCard.textContent = cardFront
+            secondCard.textContent = cardFront
+            console.log("不相同")
+            firstCard = null
+            secondCard = null
+            cards.forEach(card => card.style.pointerEvents = "auto")
+          },1000)
+        }
+      }
+    }    
+  )
+)

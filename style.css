@@ -53,3 +53,10 @@ html, body, #app {
   position: absolute;
   bottom: 10%;
 }
+
+.card-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
