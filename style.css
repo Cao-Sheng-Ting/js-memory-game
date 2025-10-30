@@ -54,9 +54,10 @@ html, body, #app {
   bottom: 10%;
 }
 
+/* 卡片消失效果 */
 .card-hidden {
   opacity: 0;
-  visibility: hidden;
+  /* visibility: hidden; */
   pointer-events: none;
   transition: opacity 0.3s ease;
 }
