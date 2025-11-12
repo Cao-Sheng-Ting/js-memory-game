@@ -7,12 +7,8 @@ html, body, #app {
   height: 100%;
 }
 
-/* 控制畫面顯示/隱藏 */
-/* .hidden{
-  display: none ; 
-}  */
-
-#start.hidden {
+/* 提高權重，避免被 display 設定覆蓋 */
+#start.hidden { 
   display: none;
 }
 
@@ -41,9 +37,22 @@ html, body, #app {
 
 #cards{
   display: grid;
+  justify-items: center;
+}
+
+#cards.level-1 {
   grid-template-columns: repeat(4, 100px);
   grid-template-rows: repeat(2, 100px);
-  justify-items: center;
+}
+
+#cards.level-2 {
+  grid-template-columns: repeat(4, 100px);
+  grid-template-rows: repeat(4, 100px);
+}
+
+#cards.level-3 {
+  grid-template-columns: repeat(6, 100px);
+  grid-template-rows: repeat(4, 100px);
 }
 
 #gmae-button {
