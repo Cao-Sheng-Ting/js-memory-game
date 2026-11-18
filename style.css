@@ -78,10 +78,6 @@ html, body, #app {
   backface-visibility: hidden;
 }
 
-/* .card-front{
-
-} */
-
 .card-back{
   transform: rotateY(180deg);
 }

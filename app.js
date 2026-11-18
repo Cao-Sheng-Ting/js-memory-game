@@ -3,6 +3,8 @@ const gameBoard = document.getElementById("game-board");
 const startScreen = document.getElementById("start");
 
 const fruits = ["🍎","🍊","🍌","🍉","🍇","🍓","🫐","🍒","🍑","🍍","🥥","🥝","🥑","🧅"];
+let currentLevelIndex = 0;
+let matchedPairs = 0;
 
 const levels = [
   {levelClass : "level-1", pairs : 4 },
@@ -13,6 +15,7 @@ const levels = [
 startBtn.addEventListener('click', function(){
   startScreen.classList.add("hidden");       // 隱藏主畫面
   gameBoard.classList.remove("hidden"); // 顯示遊戲畫面
+  currentLevelIndex = 0; //開始遊戲前清空過關紀錄
   loadLevel(levels[currentLevelIndex]);
 })
 
@@ -25,9 +28,6 @@ function shuffle(array) {
   }
   return arr
 }
-
-let currentLevelIndex = 0;
-let matchedPairs = 0;
 
 function checkLevelComplete(pairs){
   if(matchedPairs === pairs){
@@ -49,6 +49,8 @@ let secondCard = null;
 
 
 function loadLevel(levelData){
+  cardsWrapper.style.pointerEvents = "none";
+
   const { levelClass, pairs } = levelData;
 
   const selectFruits = shuffle(fruits).slice(0,pairs).flatMap(x => [x, x]); //隨機挑選水果，並複製一份方便配對
@@ -73,11 +75,6 @@ function loadLevel(levelData){
     cardFront.classList.add("card-front");
     cardBack.classList.add("card-back");
 
-    setTimeout(()=>{
-      cardInner.classList.remove("is-flipped")
-    }, 3000);
-
-
     cardInner.append(cardFront, cardBack)
     card.appendChild(cardInner);
 
@@ -85,9 +82,17 @@ function loadLevel(levelData){
   });
   cardsWrapper.append(...cardsContent);
   cardsWrapper.className = levelClass
+
+  // 開局先翻開 3 秒讓玩家記憶，時間到全部蓋回並解鎖
+  setTimeout(()=>{
+    cardsContent.forEach(card =>{
+      card.querySelector('.card-inner').classList.remove('is-flipped');
+    });
+    cardsWrapper.style.pointerEvents = "auto";
+  }, 3000);
 }
 
-// 驗證是否點擊正確的的卡片
+// 驗證是否點擊正確的卡片
 function isValidCard(card){
   if(!card) return false;
   if(card.classList.contains("card-hidden")) return false;
@@ -111,8 +116,6 @@ function selectCard(card){
 // 驗證firstCard和secondCard配對是否成功
 function checkMatch(){
   if(!firstCard || !secondCard) return
-  console.log(firstCard)
-  console.log(secondCard)
   cardsWrapper.style.pointerEvents = "none";
   if(firstCard.dataset.fruit === secondCard.dataset.fruit){
     setTimeout(()=>{
@@ -122,8 +125,8 @@ function checkMatch(){
       firstCard = null;
       secondCard = null;
       matchedPairs ++;
-      checkLevelComplete(pairs);
       cardsWrapper.style.pointerEvents = "auto"
+      checkLevelComplete(pairs);
     },1000)
   }else{
     resetCards()
@@ -132,7 +135,6 @@ function checkMatch(){
 
 // 配對失敗卡片重新覆蓋
 function resetCards(){
-  console.log("配對失敗")
   const firstInner = firstCard.querySelector(".card-inner");
   const secondInner = secondCard.querySelector(".card-inner");
   cardsWrapper.style.pointerEvents = "none";
@@ -145,7 +147,7 @@ function resetCards(){
   },1000)
 }
 
-// 點擊卡片後的判斷邏輯
+// 事件委派：只在容器綁一次，用 closest 找出被點的卡片
 cardsWrapper.addEventListener("click", (e)=> {
   const card = e.target.closest(".card")
   if(isValidCard(card)){
